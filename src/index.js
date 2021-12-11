@@ -1,23 +1,37 @@
+///////////////////////////////////////////////
+///// IMPORT MODULES //////////////////////////
+///////////////////////////////////////////////
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App/App.js';
+
+/// Import Redux
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-// Provider allows us to use redux within our react app
 import { Provider } from 'react-redux';
+
+// Import Redux Logger
 import logger from 'redux-logger';
-// Import saga middleware
+
+// Import Saga Middleware
 import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects';
+
+// Import Axios
 import axios from 'axios';
 
-// Create the rootSaga generator function
+///////////////////////////////////////////////
+///// SAGAS LOGIC /////////////////////////////
+///////////////////////////////////////////////
+
+// Create Root Saga Generators
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
 }
 
+// Fetch Movies from the Database
 function* fetchAllMovies() {
-    // get all movies from the DB
     try {
         const movies = yield axios.get('/api/movie');
         console.log('get all:', movies.data);
@@ -29,8 +43,9 @@ function* fetchAllMovies() {
         
 }
 
-// Create sagaMiddleware
-const sagaMiddleware = createSagaMiddleware();
+///////////////////////////////////////////////
+///// REDUX LOGIC /////////////////////////////
+///////////////////////////////////////////////
 
 // Used to store movies returned from the server
 const movies = (state = [], action) => {
@@ -52,19 +67,36 @@ const genres = (state = [], action) => {
     }
 }
 
-// Create one store that all components can use
+const featuredMovie = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_FEATURED_MOVIE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
+///////////////////////////////////////////////
+///// RENDER DOM //////////////////////////////
+///////////////////////////////////////////////
+
+// Create Saga Middleware
+const sagaMiddleware = createSagaMiddleware();
+
+// Create Redux Store
 const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        featuredMovie
     }),
-    // Add sagaMiddleware to our store
     applyMiddleware(sagaMiddleware, logger),
 );
 
-// Pass rootSaga into our sagaMiddleware
+// Run Saga Middleware
 sagaMiddleware.run(rootSaga);
 
+// Render DOM
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={storeInstance}>
