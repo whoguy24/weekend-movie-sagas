@@ -67,6 +67,15 @@ const genres = (state = [], action) => {
     }
 }
 
+const featuredMovie = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_FEATURED_MOVIE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 ///////////////////////////////////////////////
 ///// RENDER DOM //////////////////////////////
 ///////////////////////////////////////////////
@@ -79,6 +88,7 @@ const storeInstance = createStore(
     combineReducers({
         movies,
         genres,
+        featuredMovie
     }),
     applyMiddleware(sagaMiddleware, logger),
 );
