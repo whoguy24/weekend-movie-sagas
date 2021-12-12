@@ -29,6 +29,7 @@ import axios from 'axios';
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchMovies);
     yield takeEvery('FETCH_GENRES', fetchGenres);
+    yield takeEvery('ADD_MOVIE', addMovie);
 }
 
 // Fetch Movies from the Database
@@ -52,6 +53,15 @@ function* fetchGenres() {
     }
         
 }
+
+function* addMovie(action) {
+    try {
+      yield axios.post('/api/movie', action.payload);
+      yield put ({type: 'FETCH_MOVIES'});
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
 ///////////////////////////////////////////////
 ///// REDUX LOGIC /////////////////////////////
