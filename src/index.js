@@ -27,21 +27,41 @@ import axios from 'axios';
 
 // Create Root Saga Generators
 function* rootSaga() {
-    yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+    yield takeEvery('FETCH_MOVIES', fetchMovies);
+    yield takeEvery('FETCH_GENRES', fetchGenres);
+    yield takeEvery('ADD_MOVIE', addMovie);
 }
 
 // Fetch Movies from the Database
-function* fetchAllMovies() {
+function* fetchMovies() {
     try {
         const movies = yield axios.get('/api/movie');
-        console.log('get all:', movies.data);
         yield put({ type: 'SET_MOVIES', payload: movies.data });
-
     } catch {
-        console.log('get all error');
+        console.log('There was an error fetching movies from the database.');
     }
         
 }
+
+// Fetch Genres from the Database
+function* fetchGenres() {
+    try {
+        const genres = yield axios.get('/api/genre');
+        yield put({ type: 'SET_GENRES', payload: genres.data });
+    } catch {
+        console.log('There was an error fetching genres from the database.');
+    }
+        
+}
+
+function* addMovie(action) {
+    try {
+      yield axios.post('/api/movie', action.payload);
+      yield put ({type: 'FETCH_MOVIES'});
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
 ///////////////////////////////////////////////
 ///// REDUX LOGIC /////////////////////////////
