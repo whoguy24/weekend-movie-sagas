@@ -52,17 +52,23 @@ function MovieAdd () {
                 <input type="text" 
                     value={title} 
                     onChange={(event) => setTitle(event.target.value)} 
+                    placeholder='Title'
                 />
+                <br />
                 <input type="text" 
                     value={poster} 
                     onChange={(event) => setPoster(event.target.value)} 
+                    placeholder='Poster Link'
                 />
-                <input type="text" 
+                <br />
+                <textarea 
                     value={description} 
                     onChange={(event) => setDescription(event.target.value)} 
+                    placeholder='Description'
                 />
+                <br />
                 <select value={genre} onChange={(event) => setGenre(event.target.value)}>
-                <option disabled value='0'>Select Genre</option>
+                    <option disabled value='0'>Select Genre</option>
                     {genres.map((genre) => {
                         return (
                             <option key={genre.id} value={genre.id}>

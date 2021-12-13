@@ -12,6 +12,7 @@ function MovieListItem({movieItem}) {
     // Handle Click on Movie
     function handleMovieClick(movie) {
         dispatch({ type: 'SET_FEATURED_MOVIE', payload: movie });
+        dispatch({ type: 'SET_FEATURED_MOVIE_GENRES', payload: movie.id });
         history.push('/details');
     }
 

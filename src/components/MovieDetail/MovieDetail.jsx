@@ -10,6 +10,7 @@ function MovieDetail() {
 
     // Define Redux Store Variables
     const movie = useSelector((store) => store.featuredMovie);
+    const movieGenres = useSelector((store) => store.featuredMovieGenres);
 
     // Handle Back Button
     function handleBackButton () {
@@ -23,6 +24,18 @@ function MovieDetail() {
             <h1>{movie.title}</h1>
             <p>{movie.description}</p>
             <button onClick={handleBackButton}>Back</button>
+
+
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Movie Genres Go Here</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
         </div>
     )
 }
