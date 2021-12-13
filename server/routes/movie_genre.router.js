@@ -14,6 +14,7 @@ router.get('/:id', (req, res) => {
     console.log(query);
     
 
+    
   pool.query(query, sqlValues)
     .then( result => {
       res.send(result.rows);
