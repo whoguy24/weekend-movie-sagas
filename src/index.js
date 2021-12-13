@@ -28,6 +28,7 @@ import axios from 'axios';
 // Create Root Saga Generators
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchMovies);
+    yield takeEvery('FETCH_MOVIES_GENRES', fetchMoviesGenres);
     yield takeEvery('FETCH_GENRES', fetchGenres);
     yield takeEvery('ADD_MOVIE', addMovie);
 }
@@ -39,8 +40,17 @@ function* fetchMovies() {
         yield put({ type: 'SET_MOVIES', payload: movies.data });
     } catch {
         console.log('There was an error fetching movies from the database.');
-    }
-        
+    }   
+}
+
+// Fetch Movies from the Database
+function* fetchMoviesGenres() {
+    try {
+        const moviesGenres = yield axios.get('/api/movie_genres/#id');
+        yield put({ type: 'SET_MOVIES', payload: movies.data });
+    } catch {
+        console.log('There was an error fetching movies from the database.');
+    }  
 }
 
 // Fetch Genres from the Database
@@ -51,7 +61,6 @@ function* fetchGenres() {
     } catch {
         console.log('There was an error fetching genres from the database.');
     }
-        
 }
 
 function* addMovie(action) {
